@@ -4,6 +4,7 @@ import errorHandlerMiddleware from "./middleware/error-handler.js"
 import notFoundMiddleware from "./middleware/not-found.js"
 import connectDB from "./db/connect.js"
 import routes from "./routes/index.js"
+import "express-async-errors"
 
 dotenv.config()
 const app = express()

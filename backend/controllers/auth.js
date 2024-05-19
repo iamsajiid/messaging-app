@@ -14,7 +14,11 @@ const register = async (req, res) => {
     });
 
     const token = newUser.createJWT();
-    res.status(StatusCodes.OK).json({
+    res.status(StatusCodes.OK).cookie("jwt", token, {
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        sameSite: "strict"
+      }).json({
         msg: "user created successfully",
         user: newUser.username,
         token,
@@ -46,4 +50,12 @@ const login = async (req, res) => {
   }
 }
 
-export { register, login };
+const logout = (req, res) => {
+  try {
+    res.cookie("jwt", "", {maxAge: 0}).status(StatusCodes.OK).json({msg: "user logged out successfully"})
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: error})
+  }
+}
+
+export { register, login, logout };
