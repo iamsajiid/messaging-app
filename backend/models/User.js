@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
       message: "password must contain atleast 1 alphabet and 1 digit",
     },
   },
-});
+}, {timestamps: true});
 
 userSchema.pre("save", async function(next){
   if (this.isModified("password") || this.isNew) {
