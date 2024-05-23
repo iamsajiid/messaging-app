@@ -4,12 +4,13 @@ import errorHandlerMiddleware from "./middleware/error-handler.js"
 import notFoundMiddleware from "./middleware/not-found.js"
 import connectDB from "./db/connect.js"
 import routes from "./routes/index.js"
-import "express-async-errors"
+import cookieParser from "cookie-parser"
 
 dotenv.config()
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use("/", routes)
 

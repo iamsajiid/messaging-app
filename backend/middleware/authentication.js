@@ -1,21 +1,19 @@
 import UnauthenticatedError from "../errors/unauthenticated.js";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-const authenticationMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new UnauthenticatedError("Authentication invalid");
+const authenticationMiddleware = async (req, res, next) => {
+  const token = req.cookies.jwt
+  if(!token){
+    throw new UnauthenticatedError("unautheticated token")
   }
-  const token = authHeader.split(" ")[1];
-  const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  if (!payload) {
-    throw new UnauthenticatedError("Authentication invalid");
-  }
+  const payload = jwt.verify(token, process.env.JWT_SECRET_KEY)  
   try {
-    req.user = { ...payload };
-    next();
+    const user = await User.findById(payload.userID).select("-password")
+    req.user = user
+    next() 
   } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
+    throw new UnauthenticatedError("authentication invalid")
   }
 };
 
