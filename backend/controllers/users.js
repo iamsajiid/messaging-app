@@ -21,7 +21,7 @@ const getUsersMessaged = async (req, res) => {
       );
     });
     const flattenedChats = flattenArray(chattedWith);
-    res.json({ conversations, chattedWith, flattenedChats });
+    res.json(flattenedChats);
   } catch (error) {
     res.json({ msg: error });
   }
