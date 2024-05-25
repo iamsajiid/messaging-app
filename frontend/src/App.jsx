@@ -1,10 +1,12 @@
-function App() {
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
+function App() {
   return (
-    <>
-      <h1 className='text-3xl text-red-600 text-center'>Hi</h1>
-    </>
-  )
+    <div className='p-4 h-screen flex items-center justify-center'>
+      <SignUp/>
+    </div>
+  );
 }
 
-export default App
+export default App;
