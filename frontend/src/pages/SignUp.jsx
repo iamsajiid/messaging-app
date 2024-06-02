@@ -21,7 +21,7 @@ function SignUp() {
             name="name"
             placeholder="enter name"
             {...register("name", {
-              required: true,
+              required: true
             })}
           />
           <Input
