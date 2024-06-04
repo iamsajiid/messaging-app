@@ -49,9 +49,9 @@ function SignUp() {
             })}
           />
           <GenderCheckBox/>
-          <a href="#" className="text-sm text-white hover:underline hover:text-blue-600 mt-5 inline-block">
+          <Link to="/login" className="text-sm text-white hover:underline hover:text-blue-600 mt-5 inline-block">
             already have an account ?
-          </a>
+          </Link>
           <Button className="mt-3" children={"Sign Up"} />
         </form>
       </div>
