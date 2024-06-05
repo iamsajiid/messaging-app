@@ -1,23 +1,36 @@
-import React, { useId } from "react";
+import React, { forwardRef } from "react";
 
-function GenderCheckBox({ label, type = "checkbox", className = "", ...props }) {
-  const id = useId();
+const GenderCheckBox = forwardRef(({ selectedGender, onChange }, ref) => {
   return (
     <div className="flex mt-4">
-      <div className="form-control">
-        <label className={`label gap-2 cursor-pointer `}>
+      <div className="form-control flex-row gap-4">
+        <label className="label gap-2 cursor-pointer">
           <span className="label-text text-white">Male</span>
-          <input type="checkbox" className="checkbox border-white" />
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            className="radio border-white"
+            checked={selectedGender === "male"}
+            onChange={onChange}
+            ref={ref}
+          />
         </label>
-      </div>
-      <div className="form-control">
-        <label className={`label gap-2 cursor-pointer`}>
+        <label className="label gap-2 cursor-pointer">
           <span className="label-text text-white">Female</span>
-          <input type="checkbox" className="checkbox border-white" />
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            className="radio border-white"
+            checked={selectedGender === "female"}
+            onChange={onChange}
+            ref={ref}
+          />
         </label>
       </div>
     </div>
   );
-}
+});
 
 export default GenderCheckBox;

@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import GenderCheckBox from "../components/GenderCheckBox";
+import useSignup from "../hooks/useSignup";
 
 function SignUp() {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, setValue, watch } = useForm();
+  const { loading, signup } = useSignup();
+  const [inputs, setInputs] = useState({});
+
+  const gender = watch("gender");
+
+  const create = async (data) => {
+    setInputs(data);
+    await signup(data);
+  };
+
+  const handleGenderChange = (e) => {
+    setValue("gender", e.target.value);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -15,13 +29,13 @@ function SignUp() {
           Sign Up
           <span className="text-blue-500"> Chat</span>
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(create)}>
           <Input
             label={"Full Name"}
             name="name"
             placeholder="enter name"
             {...register("name", {
-              required: true
+              required: true,
             })}
           />
           <Input
@@ -33,8 +47,17 @@ function SignUp() {
             })}
           />
           <Input
+            label={"email"}
+            name="email"
+            placeholder="enter email"
+            {...register("email", {
+              required: true,
+            })}
+          />
+          <Input
             label={"Password"}
             name="password"
+            type="password"
             placeholder="enter password"
             {...register("password", {
               required: true,
@@ -42,17 +65,35 @@ function SignUp() {
           />
           <Input
             label={"Confirm Password"}
-            name="password"
+            name="confirmPassword"
+            type="password"
             placeholder="confirm password"
-            {...register("password", {
+            {...register("confirmPassword", {
               required: true,
             })}
           />
-          <GenderCheckBox/>
-          <Link to="/login" className="text-sm text-white hover:underline hover:text-blue-600 mt-5 inline-block">
-            already have an account ?
+          <GenderCheckBox
+            selectedGender={gender}
+            onChange={handleGenderChange}
+            ref={
+              register("gender", {
+                required: true,
+              }).ref
+            }
+          />
+          <Link
+            to="/auth/login"
+            className="text-sm text-white hover:underline hover:text-blue-600 mt-5 inline-block"
+          >
+            already have an account?
           </Link>
-          <Button className="mt-3" children={"Sign Up"} />
+          <Button type="submit" className="mt-3" disabled={loading}>
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
         </form>
       </div>
     </div>

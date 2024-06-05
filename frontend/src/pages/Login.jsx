@@ -31,7 +31,7 @@ function Login() {
               required: true,
             })}
           />
-          <Link to="/sign-up" className="text-sm  hover:underline hover:text-blue-600 mt-4 inline-block">
+          <Link to="/auth/register" className="text-sm  hover:underline hover:text-blue-600 mt-4 inline-block">
             {"don't"} have an account ?
           </Link>
           <Button className="mt-3" children={"Login"}/>
