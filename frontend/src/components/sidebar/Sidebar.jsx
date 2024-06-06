@@ -27,7 +27,7 @@ function Sidebar() {
       <Conversations />
       <Button
         children={<BiLogOut className="w-6 h-6 text-white cursor-pointer" />}
-        className="w-min"
+        className="w-min bg-black border-black"
       />
     </div>
   );
