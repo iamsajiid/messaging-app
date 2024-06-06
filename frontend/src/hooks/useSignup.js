@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 function useSignup() {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { userAuth, setUserAuth } = useAuthContext()
 
-  const signup = async ({ name, username, email, password, confirmPassword, gender }) => {
-    const success = handleInputErrors({ name, username, email, password, confirmPassword, gender });
-
+  const signup = async ({name, username, email, password, confirmPassword, gender}) => {
+    const success = handleInputErrors({name, username, email, password, confirmPassword, gender});
+    
     if (!success) return;
 
     setLoading(true);
@@ -20,10 +22,14 @@ function useSignup() {
         { name, username, email, password, gender },
         { withCredentials: true }
       );
-      if(res){
-        console.log(res.data);
-        navigate("/")
+      console.log("axios-res -- ", res)
+      if (res) {
+        console.log("axios-res.data -- ", res.data);
+        navigate("/");
       }
+      localStorage.setItem("chat-user", JSON.stringify(res.data))
+      setUserAuth(res.data)
+      console.log("userAuth -- ", userAuth)
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);
     } finally {
@@ -31,7 +37,7 @@ function useSignup() {
     }
   };
 
-  function handleInputErrors({ name, username, email, password, confirmPassword, gender }) {
+  function handleInputErrors({name, username, email, password, confirmPassword, gender,}) {
     if (!name || !username || !email || !password || !confirmPassword || !gender) {
       toast.error("Please fill in all fields");
       return false;

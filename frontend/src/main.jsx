@@ -2,10 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/SignUp.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -13,21 +15,27 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path:"/",
-        element: <HomePage/>
+        path: "/",
+        element: <HomePage />,
       },
       {
         path: "/auth/login",
-        element: <LoginPage />,
+        element: (<LoginPage />),
       },
       {
-        path:"/auth/register",
-        element: <SignUpPage/>
-      }
+        path: "/auth/register",
+        element: (
+          <ProtectedRoute>
+            <SignUpPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}/>
+  <AuthContextProvider>
+    <RouterProvider router={router} />
+  </AuthContextProvider>
 );
