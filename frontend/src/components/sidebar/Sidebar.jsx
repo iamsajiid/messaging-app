@@ -5,18 +5,15 @@ import { IoSearchSharp } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
 import Conversations from "./Conversations";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import useLogout from "../../hooks/useLogout";
 
 function Sidebar() {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  
-  const navigate = useNavigate()
 
-  const logout = () => {
-    localStorage.removeItem("chat-user")
-    navigate("/auth/login")
-  }
+  const { loading, logout } = useLogout();
 
   return (
     <div className="border-r border-slate-500 p-4 flex flex-col">
@@ -34,7 +31,13 @@ function Sidebar() {
       <div className="divider px-3"></div>
       <Conversations />
       <Button
-        children={<BiLogOut className="w-6 h-6 text-white cursor-pointer" />}
+        children={
+          loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <BiLogOut className="w-6 h-6 text-white cursor-pointer" />
+          )
+        }
         className="w-min bg-black border-black"
         onClick={logout}
       />

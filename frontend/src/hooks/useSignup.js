@@ -22,14 +22,15 @@ function useSignup() {
         { name, username, email, password, gender },
         { withCredentials: true }
       );
-      console.log("axios-res -- ", res)
+
       if (res) {
-        console.log("axios-res.data -- ", res.data);
         navigate("/");
       }
+      
       localStorage.setItem("chat-user", JSON.stringify(res.data))
       setUserAuth(res.data)
       console.log("userAuth -- ", userAuth)
+      
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);
     } finally {

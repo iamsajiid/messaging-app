@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { Navigate, RouterProvider, createBrowserRouter, useNavigate } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LoginPage from "./pages/Login.jsx";
 import SignUpPage from "./pages/SignUp.jsx";
 import HomePage from "./pages/HomePage.jsx";
@@ -16,16 +16,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: (
+          <ProtectedRoute redirectTo="/">
+            <HomePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/auth/login",
-        element: (<LoginPage />),
+        element: (
+          <ProtectedRoute redirectTo="/auth/login">
+            <LoginPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/auth/register",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute redirectTo="/auth/register">
             <SignUpPage />
           </ProtectedRoute>
         ),
