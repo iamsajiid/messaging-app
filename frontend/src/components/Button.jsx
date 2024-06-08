@@ -1,11 +1,18 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function Button({children, type = "button", className = "", ...props}) {
-  return (
-      <button className={`btn btn-block btn-sm ${className}`} type={type} {...props}>
+const Button = forwardRef(
+  ({ children, type = "button", className = "", ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={`btn btn-block btn-sm ${className}`}
+        type={type}
+        {...props}
+      >
         {children}
       </button>
-  );
-}
+    );
+  }
+);
 
 export default Button;

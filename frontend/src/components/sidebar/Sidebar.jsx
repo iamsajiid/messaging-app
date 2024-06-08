@@ -13,12 +13,13 @@ function Sidebar() {
 
   const { loading, logout } = useLogout();
   const [clicked, setClicked] = useState(false);
-  const inputRef = useRef(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (inputRef.current && !inputRef.current.contains(event.target)) {
+      if (formRef.current && !formRef.current.contains(event.target)) {
         setClicked(false);
+        console.log(clicked)
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -34,16 +35,17 @@ function Sidebar() {
         className={`flex items-center gap-1 relative`}
         onSubmit={(e) => handleSubmit(e)}
         onClick={() => setClicked(true)}
+        ref={formRef}
       >
         <Input
-          ref={inputRef}
+          // ref={inputRef}
           placeholder="search"
           className={`${clicked ? "bg-white" : "bg-gray-900"}`}
         />
         <Button
           type="submit"
-          ref={inputRef}
-          className={`bg-white border-none w-min h-9 absolute right-0 items-center hover:bg-transparent ${
+          // ref={inputRef}
+          className={`border-none w-min h-9 absolute right-0 items-center hover:bg-transparent ${
             clicked ? "bg-white" : "bg-gray-900"
           }`}
           children={<IoSearchSharp className="w-5 h-5 outline-none" />}

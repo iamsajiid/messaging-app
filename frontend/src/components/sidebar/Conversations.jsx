@@ -3,9 +3,8 @@ import Conversation from "./Conversation";
 import useGetConversations from "../../hooks/useGetConversations";
 import { getRandomEmoji } from "../../utils/emoji";
 
-function Conversations() {
+const Conversations = React.memo(() => {
   const { loading, conversations } = useGetConversations();
-  console.log("in components -- ",conversations)
 
   return (
     <div className="py-2 flex flex-col overflow-auto">
@@ -22,6 +21,6 @@ function Conversations() {
       ))}
     </div>
   );
-}
+})
 
 export default Conversations;
