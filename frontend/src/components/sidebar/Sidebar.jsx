@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import { IoSearchSharp } from "react-icons/io5";
 import { BiLogOut } from "react-icons/bi";
 import Conversations from "./Conversations";
-import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/AuthContext";
 import useLogout from "../../hooks/useLogout";
 
 function Sidebar() {
@@ -14,18 +12,41 @@ function Sidebar() {
   };
 
   const { loading, logout } = useLogout();
+  const [clicked, setClicked] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setClicked(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="border-r border-slate-500 p-4 flex flex-col">
+    <div className="border-r border-slate-500 p-4 flex flex-col w-5/12">
       <form
-        className="flex items-center gap-2"
+        className={`flex items-center gap-1 relative`}
         onSubmit={(e) => handleSubmit(e)}
+        onClick={() => setClicked(true)}
       >
-        <Input placeholder="search" />
+        <Input
+          ref={inputRef}
+          placeholder="search"
+          className={`${clicked ? "bg-white" : "bg-gray-900"}`}
+        />
         <Button
           type="submit"
-          className="bg-sky-500 text-white"
-          children={<IoSearchSharp className="w-6 h-6 outline-none" />}
+          ref={inputRef}
+          className={`bg-white border-none w-min h-9 absolute right-0 items-center hover:bg-transparent ${
+            clicked ? "bg-white" : "bg-gray-900"
+          }`}
+          children={<IoSearchSharp className="w-5 h-5 outline-none" />}
         />
       </form>
       <div className="divider px-3"></div>
@@ -38,7 +59,7 @@ function Sidebar() {
             <BiLogOut className="w-6 h-6 text-white cursor-pointer" />
           )
         }
-        className="w-min bg-black border-black"
+        className="w-min bg-black border-black mt-auto"
         onClick={logout}
       />
     </div>

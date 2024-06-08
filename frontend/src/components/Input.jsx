@@ -1,6 +1,6 @@
 import React, { forwardRef, useId } from "react";
 
-const Input = forwardRef(({ label, labelClassname = "", type = "text", classname = "", ...props }, ref) => {
+const Input = forwardRef(({ label, labelClassname = "", type = "text", className = "", ...props }, ref) => {
     const id = useId();
     return (
       <div className="w-full">
@@ -10,7 +10,7 @@ const Input = forwardRef(({ label, labelClassname = "", type = "text", classname
           </label>
         )}
 
-        <input className={`w-full input input-bordered h-10 ${classname}`}
+        <input className={`w-full input input-bordered h-10 ${className}`}
         type={type}
         ref={ref}
         id={id}
