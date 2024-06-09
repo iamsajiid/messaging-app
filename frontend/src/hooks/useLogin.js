@@ -23,8 +23,7 @@ function useLogin() {
       if (res) {
         navigate("/");
       }
-      const data = res.data;
-      console.log("login data -- ", data);
+      const data = res.data.data;
       setUserAuth(data);
       setLoading(false);
     } catch (error) {
