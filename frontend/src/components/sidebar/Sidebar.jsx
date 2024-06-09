@@ -19,7 +19,6 @@ function Sidebar() {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
         setClicked(false);
-        console.log(clicked)
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -38,13 +37,11 @@ function Sidebar() {
         ref={formRef}
       >
         <Input
-          // ref={inputRef}
           placeholder="search"
           className={`${clicked ? "bg-white" : "bg-gray-900"}`}
         />
         <Button
           type="submit"
-          // ref={inputRef}
           className={`border-none w-min h-9 absolute right-0 items-center hover:bg-transparent ${
             clicked ? "bg-white" : "bg-gray-900"
           }`}
