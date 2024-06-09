@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import Input from "../Input";
 import Messages from "./Messages";
-import Button from "../Button";
 import { BsSend } from "react-icons/bs";
 import { TiMessages } from "react-icons/ti";
 import useConversation from "../../../store/useConversation";
+import useSendMessage from "../../hooks/useSendMessage";
 
 function MessageContainer() {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const formRef = useRef(null);
   const [clicked, setClicked] = useState(false);
+  const [message, setMessage] = useState("");
+  const { loading, sendMessage } = useSendMessage();
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  }
+    if(!message) return
+    await sendMessage(message);
+    setMessage("")
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -27,9 +31,9 @@ function MessageContainer() {
     };
   }, []);
 
-  // useEffect(()=>{
-  //   return (setSelectedConversation(null))
-  // }, [setSelectedConversation])
+  useEffect(()=>{
+    return (setSelectedConversation(null))
+  }, [setSelectedConversation])
 
   return !selectedConversation ? (
     <NoChatSelected />
@@ -53,16 +57,19 @@ function MessageContainer() {
           <input
             type="text"
             className={`${
-              clicked ? "bg-gray-600" : ""
-            } border-none outline-none text-sm rounded-lg block w-full p-2.5 pl-4 bg-gray-700 border-gray-600 text-white`}
+              clicked ? "bg-gray-600" : "bg-gray-700"
+            } border-none outline-none text-sm rounded-lg block w-full p-2.5 pl-4 text-white`}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
           <button
             type="submit"
             className={`${
               clicked ? "text-white" : "text-gray-500"
             } absolute inset-y-0 end-0 flex items-center pe-3 mr-2`}
+            onClick={handleSubmit}
           >
-            <BsSend />
+            {loading ? <div className='loading loading-spinner'></div> : <BsSend />}
           </button>
         </div>
       </form>
