@@ -38,11 +38,18 @@ const login = async (req, res) => {
     if (!user) {
       throw new CustomError("no user found");
     }
+    console.log("user in login controller --> ", user)
     const validPassword = await user.comparePassword(password);
     if (!validPassword) {
       throw new UnauthenticatedError("invalid credentials");
     }
     const token = user.createJWT();
+    const data = {
+      userID: user._id,
+      name: user.name,
+      username: user.username,
+      avatar: user.avatar
+    }
     res
       .cookie("jwt", token, {
         maxAge: 15 * 24 * 60 * 60 * 1000,
@@ -50,7 +57,7 @@ const login = async (req, res) => {
         sameSite: "strict",
       })
       .status(StatusCodes.OK)
-      .json({ msg: "login successful", token });
+      .json({ msg: "login successful", token, data });
   } catch (error) {
     throw new CustomError("something went wrong");
   }

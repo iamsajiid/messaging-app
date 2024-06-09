@@ -1,29 +1,28 @@
 import Conversation from "../models/Conversation.js";
-
-function flattenArray(arr) {
-  return arr.reduce((acc, curr) => {
-    if (Array.isArray(curr)) {
-      return acc.concat(flattenArray(curr));
-    }
-    return acc.concat(curr);
-  }, []);
-}
+import User from "../models/User.js";
 
 const getUsersMessaged = async (req, res) => {
   const { _id: senderID } = req.user;
   try {
     const conversations = await Conversation.find({
       participants: senderID,
-    }).select("-password");
+    });
+
     let chattedWith = conversations.map((obj) => {
       return obj.participants.filter(
         (id) => id.toString() !== senderID.toString()
       );
     });
-    const flattenedChats = flattenArray(chattedWith);
-    res.json(flattenedChats);
+
+    const flattenedChats = chattedWith.flat();
+
+    const chatInfos = await Promise.all(
+      flattenedChats.map((id) => User.findById(id).select("-password"))
+    );
+
+    res.json(chatInfos);
   } catch (error) {
-    res.json({ msg: error });
+    res.status(500).json({ msg: error.message });
   }
 };
 
